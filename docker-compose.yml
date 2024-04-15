@@ -1,7 +1,6 @@
 version: "3.7"
 services:
   DevOps_Project:
-    container_name: dev
     build: .
     ports:
       - "8083:8083"
