@@ -1,0 +1,39 @@
+version: "3.7"
+services:
+  DevOps_Project:
+    container_name: DevOps_Project
+    build: ../DevOps_Project
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://dbmysql:3306/devops?createDatabaseIfNotExist=true&userSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    restart: unless-stopped
+    image: dev/dev
+    depends_on:
+      - dbmysql
+
+  dbmysql:
+    container_name: 'dbmysql'
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: 'devops'
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_TCP_PORT: 3306
+    ports:
+        - 3306:3306
+
+    volumes:
+      - ./db_mysql:/docker-entrypoint-initdb.d/
+      - db_mysql:/var/lib/mysql
+    networks:
+      - network
+
+networks:
+  network:
+    driver: bridge
+
+volumes:
+  db_mysql:
+  jenkins:
